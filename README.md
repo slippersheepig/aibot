@@ -1,4 +1,4 @@
-搭配[Hugging Face](https://huggingface.co/models)使用的AI机器人  
+搭配[Hugging Face](https://huggingface.co/models)使用的AI机器人，仅支持文本输入输出模型
 > [!TIP]
 > 需注册Hugging Face账号，在个人信息profile处点击settings-access tokens生成api复制备用
 
