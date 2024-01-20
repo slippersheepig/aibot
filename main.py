@@ -1,4 +1,4 @@
-from langchain.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceHub
 from langchain.chains import LLMChain
 from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
