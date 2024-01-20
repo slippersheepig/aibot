@@ -2,7 +2,7 @@ from langchain import HuggingFaceHub, LLMChain
 from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from typing import Final
-from telegram import Update
+from telegram import Update, ChatAction
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import os
 
@@ -17,6 +17,7 @@ MODEL_REPO_ID: Final = os.getenv("MODEL_REPO_ID")
 if TOKEN is None or BOT_USERNAME is None or MODEL_REPO_ID is None:
     raise ValueError("TOKEN, BOT_USERNAME, and MODEL_REPO_ID must be defined in the .env file.")
 
+# Initialize HuggingFaceHub outside the handle_responses function
 hub_llm = HuggingFaceHub(
     repo_id=MODEL_REPO_ID,
     model_kwargs={"temperature": 0.7, "max_length": 50},
@@ -24,7 +25,7 @@ hub_llm = HuggingFaceHub(
 
 prompt = PromptTemplate(
     input_variables=["question"],
-    template="You are a helpful assistant. {question}"
+    template="You are a helpful assistant. {question}?"
 )
 
 hub_chain = LLMChain(prompt=prompt, llm=hub_llm)
@@ -41,11 +42,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         new_text = text
 
+    # Send "typing" action
+    await context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
+
     response: str = hub_chain.run(new_text)
 
     print(f'User({update.message.chat.id}) in {message_type}: "{text}"')
     print('bot:', response)
 
+    # Remove "typing" action and send the response
+    await context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
     await update.message.reply_text(response)
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -59,5 +65,5 @@ if __name__ == '__main__':
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
     app.add_error_handler(error)
 
-    print('polling...')
+    print('Polling...')
     app.run_polling(poll_interval=3)
