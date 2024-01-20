@@ -47,7 +47,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Send "typing" action
     await context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
 
-    response: str = hub_chain.run(new_text)
+    response: str = hub_chain.invoke(new_text)
 
     print(f'User({update.message.chat.id}) in {message_type}: "{text}"')
     print('bot:', response)
