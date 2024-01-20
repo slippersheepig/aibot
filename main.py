@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from typing import Final
 from telegram import Update
-from telegram import ChatAction
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import os
 
