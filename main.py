@@ -20,7 +20,7 @@ if TOKEN is None or BOT_USERNAME is None or MODEL_REPO_ID is None:
 # Initialize HuggingFaceHub outside the handle_responses function
 hub_llm = HuggingFaceHub(
     repo_id=MODEL_REPO_ID,
-    model_kwargs={"temperature": 0.7, "max_length": 50},
+    model_kwargs={"temperature": 0.7, "max_length": 8000},
 )
 
 prompt = PromptTemplate(
