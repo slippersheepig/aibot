@@ -25,7 +25,7 @@ hub_llm = HuggingFaceHub(
 
 prompt = PromptTemplate(
     input_variables=["question"],
-    template="You are a helpful assistant. {question}?"
+    template="{question}?"
 )
 
 hub_chain = LLMChain(prompt=prompt, llm=hub_llm)
