@@ -49,7 +49,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # 发送“正在输入”动作
     await context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
 
-    response: str = hub_chain.run(new_text)
+    response: str = hub_chain.invoke(new_text)
 
     print(f'用户({update.message.chat.id})在{message_type}中: "{text}"')
     print('机器人:', response)
